@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Transection;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+// use App\Http\Controllers\Controller;
+use App\Http\Controllers\ApiController;
 
-class TransectionController extends Controller
+
+class TransectionController extends ApiController
 {
     /**
      * Display a listing of the resource.

@@ -15,23 +15,32 @@ class User extends Authenticatable
 
     use Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'name', 'email', 'password','verified','verification_token','admin'
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
     protected $hidden = [
         'password', 'remember_token','verification_token'
     ];
+
+    /**
+     * Set ten, email theo chuan
+     * https://www.youtube.com/watch?v=lohl1kfoJc8
+     */
+    // public function setNameAttribute($name)
+    // {
+    //     $this->attributes['name']=strtolower($name);
+    // }
+    // public function getNameAttribute($name)
+    // {
+    //     return ucwords($name);
+    // }
+    // public function setEmailAttribute($email)
+    // {
+    //     $this->attributes['email']=strtolower($email);
+    // }
+
+
 
     public function isVerified()
     {
@@ -41,7 +50,7 @@ class User extends Authenticatable
     {
         return $this->admin==User::ADMIN_USER;
     }
-    public function generateVerificationCode()
+    public static function generateVerificationCode()
     {
         return str_random(40);
     }
