@@ -8,8 +8,9 @@ use App\Model\Product;
 
 class Transaction extends Model
 {
-    // Mo hinh giao dich
-    protected $fillable=[
+    protected $table='transactions';
+    protected $fillable=
+    [
         'quantity',
         'buyer_id',
         'product_id',
@@ -18,7 +19,7 @@ class Transaction extends Model
     {
         return $this->belongsTo(Buyer::class);
     }
-    public function products()
+    public function product()
     {
         return $this->belongsTo(Product::class);
     }

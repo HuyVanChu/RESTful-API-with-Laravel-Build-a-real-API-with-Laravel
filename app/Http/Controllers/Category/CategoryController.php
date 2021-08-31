@@ -2,85 +2,59 @@
 
 namespace App\Http\Controllers\Category;
 
-use Illuminate\Http\Request;
-// use App\Http\Controllers\Controller;
+
 use App\Http\Controllers\ApiController;
+use App\Model\Category;
+use Illuminate\Http\Request;
 
 class CategoryController extends ApiController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        $category=Category::all();
+        return $this->showAll($category);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|unique:categories',
+            'description' => 'required',
+        ]);
+        $category=new Category($request->all());
+        return $this->showOne($category, 201);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function show(category $category)
     {
-        //
+        return $this->showOne($category);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function update(Request $request, category $category)
     {
-        //
+        /**
+         * 1.fill: truong hop da co model va muon dien du lieu vao 1 array
+         * 2.Các intersect: khi nhan request -> loc du lieu co trong fill
+         *  phương pháp loại bỏ bất kỳ giá trị từ bộ sưu tập ban đầu mà không có mặt trong cho arrayhay bộ sưu tập.
+         *  Bộ sưu tập kết quả sẽ lưu giữ các khóa của bộ sưu tập ban đầu
+         * 3. trong form neu thieu cac truong trong fill -> khong the update 
+         */
+        $category->fill($request->intersect(
+            [
+                'name',
+                'description'
+            ]
+        ));
+        if ($category->isClean()) {
+            return $this->errorResponser('Yc khong the thuc hien', 422);
+        }
+        $category->save();
+        return $this->showOne($category);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function destroy(category $category)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        $category->delete();
+        return $this->showOne($category);
     }
 }

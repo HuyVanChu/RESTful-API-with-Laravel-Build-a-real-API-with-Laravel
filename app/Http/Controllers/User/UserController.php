@@ -35,16 +35,21 @@ class UserController extends ApiController
         // return response()->json(['data' => $user], 201);
         return $this->showOne($user,201);
     }
-    public function show($id)
+    public function show(User $user)
     {
-        $user = User::findOrFail($id);
+        /**
+         * Chức năng tìm User theo ID
+         * Khi chuyền User model vào function thì hệ thống sẽ tự hiểu user đó đã tồn tại rồi, nên không cần đưa id vào
+         * => Xóa: $user = User::findOrFail($id);
+         * https://www.youtube.com/watch?v=-luW4dDmWfo&t=3s
+         */
         // return response()->json(['data' => $user], 200);
         return $this->showOne($user);
     }
 
-    public function update(Request $request, $id)
+    public function update(User $user, Request $request)
     {
-        $user = User::findOrFail($id);
+        // $user = User::findOrFail($id);
         $ruler = [
             'email' => 'email|unique:users,email' . $user->id,
             'password' => 'min:6|confirmed',
@@ -81,9 +86,8 @@ class UserController extends ApiController
 
     }
 
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        $user = User::findOrFail($id);
         $user->delete();
         // return response()->json(['data'=>$user],200);
         return $this->showOne($user);

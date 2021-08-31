@@ -1,22 +1,28 @@
 <?php
 
-namespace App\Http\Controllers\Transection;
+namespace App\Http\Controllers\Buyer;
 
-use Illuminate\Http\Request;
-// use App\Http\Controllers\Controller;
 use App\Http\Controllers\ApiController;
+use App\Model\Buyer;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
-
-class TransectionController extends ApiController
+class BuyerCategoryController extends ApiController
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Buyer $buyer)
     {
-        //
+        $sellers=$buyer->transaction()->with('product.categories')
+            ->get()
+            ->puluck('product.categories')
+            ->collapse()
+            ->unique('id')
+            ->values();
+        return $this->showAll($sellers);
     }
 
     /**
@@ -43,10 +49,10 @@ class TransectionController extends ApiController
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Model\Buyer  $buyer
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Buyer $buyer)
     {
         //
     }
@@ -54,10 +60,10 @@ class TransectionController extends ApiController
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Model\Buyer  $buyer
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Buyer $buyer)
     {
         //
     }
@@ -66,10 +72,10 @@ class TransectionController extends ApiController
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Model\Buyer  $buyer
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Buyer $buyer)
     {
         //
     }
@@ -77,10 +83,10 @@ class TransectionController extends ApiController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Model\Buyer  $buyer
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Buyer $buyer)
     {
         //
     }

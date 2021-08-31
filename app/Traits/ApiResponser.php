@@ -13,7 +13,7 @@ trait ApiResponser{
         return response()->json($data,$code);
     }
     protected function errorResponser($message, $code){
-        return response()->json(['erorr'=>$message],$code);
+        return response()->json(['erorr'=>$message,'code'=>$code],$code);
     }
     protected function showAll(Collection $collection,$code=200){
         return $this->successResponser(['data'=>$collection],$code);

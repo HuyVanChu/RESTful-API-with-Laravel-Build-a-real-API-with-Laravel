@@ -16,9 +16,9 @@ class BuyerController extends ApiController
         // return response()->json(['data' => $buyer], 200);
         return $this->showAll($buyer);
     }
-    public function show($id)
+    public function show(Buyer $buyer)
     {
-        $buyer = Buyer::has('transaction')->findOrfail($id);
+        // $buyer = Buyer::has('transaction')->findOrfail($id);
         // return response()->json(['data' => $buyer], 200);
         return $this->showOne($buyer);
     }

@@ -100,8 +100,22 @@ class Handler extends ExceptionHandler
             }
             
         }
+        /**
+         * Bất kì lỗi nào khi các ngoại lệ trên chưa được xử lý, nó sẽ cho ra lỗi này. VD database không tồn tại
+         */
+        // return $this->errorResponser("Unexpacted Exection. Try later",500);
 
-        return parent::render($request, $exception);
+        /**
+         * không hiển thị lỗi, mà hiển thị thông báo lỗi gì
+         * cấu hinh: 
+         *  1. config/app.php 'debug' => env('APP_DEBUG', false),
+         *  2. .env APP_DEBUG=false
+         */
+        if (config('app.debug')) {
+            return parent::render($request, $exception);
+        }
+        
+        
     }
 
     /**
