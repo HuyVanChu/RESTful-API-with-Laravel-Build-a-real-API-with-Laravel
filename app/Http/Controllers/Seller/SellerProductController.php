@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Model\Product;
 use App\User;
 use Illuminate\Foundation\Testing\HttpException;
+use Illuminate\Support\Facades\Storage;
 
 class SellerProductController extends ApiController
 {
@@ -29,7 +30,10 @@ class SellerProductController extends ApiController
         ]);
         $data=$request->all();
         $data['status']=Product::UNAVAILABLE_PRODUCT;
-        $data['image']='1.jpg';
+        // them anh
+        // http://localhost/RESTful-API/public/api/seller/7/products
+        // https://www.youtube.com/watch?v=oGv7hAtAF00&list=PLw_73jI5PQ-Lpl8mkPdqhK5Nr-UyzjNDx&index=108
+        $data['image']=$request->image->store('');
         $data['seller_id']=$seller->id;
 
         $product=Product::create($data);
@@ -62,6 +66,10 @@ class SellerProductController extends ApiController
         if ($product->isClean()) {
             return $this->errorResponser('You need to specify a different value to update', 422);
         }
+        if ($request->hasFile('image')) {
+            Storage::delete($product->image);
+            $product->image=$request->image->store('');
+        }
         $product->save();
         return $this->showOne($product);
     }
@@ -70,10 +78,15 @@ class SellerProductController extends ApiController
             throw new HttpException(422, "The specified seller is not the actual seller of the product. Functione checkSeller");
         }
     }
+    // http://localhost/RESTful-API/public/api/seller/7/products
+    /***
+     * Thay anh, nhung PUT trong postman khong co phuong thuc file =>  Chuyen ve giao thuc POST vs request _method  PUT
+     */
     public function destroy(Seller $seller, Product $product)
     {
         $this->checkSeller($seller, $product);
         $product->delete();
+        Storage::delete($product->image);
         return $this->showOne($product);
     }
 }

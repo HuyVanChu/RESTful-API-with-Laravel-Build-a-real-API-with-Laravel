@@ -38,13 +38,18 @@ Route::resource('categories.products', 'Category\CategoryProductController',['on
 Route::resource('categories.sellers', 'Category\CategorySellerController',['only'=>['index']]);
 Route::resource('categories.transactions', 'Category\CategoryTransactionController',['only'=>['index']]);
 //https://www.youtube.com/watch?v=1EvJxWKlIjI&list=PLw_73jI5PQ-Lpl8mkPdqhK5Nr-UyzjNDx&index=92
-Route::resource('categories.buyers', 'Category\CategoryBuyerController',['only'=>['index']]);
+Route::resource('categories.buyers', 'Category\CategoryBuyerController',['only'=>['index','update','destroy']]);
 
 /**
  * Products
  */
 Route::resource('products', 'Product\ProductController',['only'=>['index', 'show']]);
-
+Route::resource('products.transactions', 'Product\ProductTransactionController',['only'=>['index']]);
+Route::resource('products.buyers', 'Product\ProductBuyerController',['only'=>['index']]);
+Route::resource('products.categories', 'Product\ProductCategoryController',['only'=>['index','update','destroy']]);
+// chua duoc
+// https://www.youtube.com/watch?v=8FTyOmwxCG4&list=PLw_73jI5PQ-Lpl8mkPdqhK5Nr-UyzjNDx&index=106
+Route::resource('product.buyer.transaction', 'Product\ProductBuyerTransactionController',['only'=>['store']]);
 /**
  * Sellers
  */
@@ -52,9 +57,8 @@ Route::resource('seller', 'Seller\SellerController',['only'=>['index', 'show']])
 Route::resource('seller.transaction', 'Seller\SellerTransactionController',['only'=>['index']]);
 Route::resource('seller.categories', 'Seller\SellerCategoryController',['only'=>['index']]);
 Route::resource('seller.buyers', 'Seller\SellerBuyerController',['only'=>['index']]);
-Route::resource('seller.products', 'Seller\SellerProductController',['except'=>['create','show','edit']]);
+Route::resource('seller.products', 'Seller\SellerProductController',['except'=>['index','create','edit','delete']]);
 // Route::resource('sellers.products', 'Seller\SellerProductController',['except'=>['index', 'edit']]);
-
 /**
  * Transection
  */
