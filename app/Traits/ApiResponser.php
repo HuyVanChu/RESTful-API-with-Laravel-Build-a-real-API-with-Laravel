@@ -21,4 +21,7 @@ trait ApiResponser{
     protected function showOne(Model $model, $code=200){
         return $this->successResponser(['data'=>$model],$code);
     }
+    protected function showMessage($message, $code=200){
+        return $this->successResponser(['data'=>$message],$code);
+    }
 }
